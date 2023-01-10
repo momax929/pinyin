@@ -33,3 +33,5 @@ build/
 .vscode/
 
 pinyin.sqlite
+.pdf/
+.mvm/
