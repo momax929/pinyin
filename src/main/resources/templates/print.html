@@ -1,0 +1,60 @@
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <style>
+        h5 {
+            font-size: 24px;
+            font-family: "宋体";
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h5>
+            <p v-for="line in page_question">{{line}}</p>
+        </h5>
+    </div>
+
+
+</body>
+
+<script>
+
+    var data = new Vue({
+        el: "#app",
+        data: {
+            page_id: 0,
+            page_question: [{}]
+        },
+        created: function () {
+            var url = window.location.href;             //获取当前url
+            var dz_url = url.split('#')[0];                //获取#/之前的字符串
+            var cs = dz_url.split('?')[1];                //获取?之后的参数字符串
+            var cs_arr = cs.split('&');                    //参数字符串分割为数组
+            var cs = {};
+            for (var i = 0; i < cs_arr.length; i++) {         //遍历数组，拿到json对象
+                cs[cs_arr[i].split('=')[0]] = cs_arr[i].split('=')[1]
+            }
+            console.log(cs.page_id);
+            this.$nextTick(function () {
+                data.page_id = cs.page_id;
+
+                axios.get('/page/getPageQuestionList?page_id=' + data.page_id)
+                    .then(function (response) {
+                        data.page_question = response.data;
+                    }).catch(function (error) { console.log(error); });
+            });
+
+        }
+
+    });
+
+</script>
+
+</html>
