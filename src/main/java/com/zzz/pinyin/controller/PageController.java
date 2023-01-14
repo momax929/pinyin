@@ -42,6 +42,11 @@ public class PageController {
     public void setWordFlag(int page_id, String word_id, int flag){
         pageService.setPageWordFlag(page_id, word_id, flag);
     }
+
+    @PostMapping("/setPageFlag")
+    public void setPageFlag(int page_id){
+        pageService.setPageWordFlag(page_id, "", 1);
+    }
     
     @PostMapping("delByPage_id")
     public void delByPage_id(int page_id){

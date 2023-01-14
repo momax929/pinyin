@@ -168,14 +168,10 @@
                     }).catch(function (error) { console.log(error); });
             },
             clickAllWord() {
-                data.pageWordTable.forEach(e => {
-                    if (e.flag == 0) {
-                        axios.post('/page/setWordFlag?page_id=' + e.page_id + '&word_id=' + e.word_id + '&flag=1')
+                axios.post('/page/setPageFlag?page_id=' + data.page_id)
                             .then(function (response) {
+                                data.reflash();
                             }).catch(function (error) { console.log(error); });
-                    }
-                });
-                setTimeout("data.reflash()", "2000");
             },
             reflashPageWord() {
                 axios.get('jour/getPageWord?page_id=' + data.page_id)

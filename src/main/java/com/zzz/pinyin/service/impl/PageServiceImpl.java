@@ -24,7 +24,6 @@ import com.zzz.pinyin.mapper.PageMapper;
 import com.zzz.pinyin.mapper.WordMapper;
 import com.zzz.pinyin.service.PageService;
 
-
 @Service
 public class PageServiceImpl implements PageService {
 
@@ -197,8 +196,7 @@ public class PageServiceImpl implements PageService {
         return lst;
     }
 
-    @Override
-    public void setPageWordFlag(int page_id, String word_id, int flag) {
+    public void setPWFlag(int page_id, String word_id, int flag) {
         int printed = 1;
         if (flag == 2)
             printed = 0;
@@ -209,6 +207,18 @@ public class PageServiceImpl implements PageService {
         int right = jourMapper.getCountByPage_idFlag(page_id, 1);
         // log.info("{} {} {} {}", page_id, new Date(), right, error);
         pageMapper.updateFlag(page_id, new Date(), right, error);
+    }
+
+    @Override
+    public void setPageWordFlag(int page_id, String word_id, int flag) {
+        if (!word_id.equals(""))
+            setPWFlag(page_id, word_id, flag);
+        else
+            for (Jour j : jourMapper.getJourByPage_id(page_id)) {
+                if (j.getFlag() == 0) {
+                    setPWFlag(page_id, j.getWord_id(), 1);
+                }
+            }
     }
 
     @Override
